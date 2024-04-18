@@ -1,0 +1,11 @@
+.NavigationMenu {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 1rem;
+  font-weight: bold;
+}
