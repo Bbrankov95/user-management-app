@@ -34,7 +34,8 @@ const TasksPage = () => {
       key: "userId",
       dataIndex: "userId",
       render: (userId: Todo["userId"]) => <p>{usersById?.[userId]?.name}</p>,
-      sorter: (a: Todo, b: Todo) => (a.userId > b.userId ? 1 : -1),
+      sorter: (a: Todo, b: Todo) =>
+        usersById[a.id]?.name > usersById[b.id]?.name ? 1 : -1,
       onFilter: (value: boolean | React.Key, record: Todo) =>
         Number(value) === record.userId,
       filters: filterOptionByOwner,
@@ -78,7 +79,7 @@ const TasksPage = () => {
     },
   ];
 
-  const dataSource = todos.map((todo, i) => ({ ...todo, key: `${i + 1}` }));
+  const dataSource = todos.map((todo) => ({ ...todo, key: todo.id }));
 
   const getData = useCallback(async () => {
     try {
@@ -102,6 +103,7 @@ const TasksPage = () => {
   return (
     <Flex vertical flex={1}>
       <Table
+        rowHoverable
         bordered
         dataSource={dataSource}
         columns={columns}

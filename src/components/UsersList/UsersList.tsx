@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Flex from "antd/es/flex";
 import Empty from "antd/es/empty";
@@ -9,7 +9,7 @@ import { usersAPI } from "services";
 import { useAppSelector } from "store";
 import { insertUsers, selectUsersAllIds } from "store/slices/usersSlice";
 
-const UsersList = memo(() => {
+const UsersList = () => {
   const usersAllIds = useAppSelector(selectUsersAllIds);
   const dispatch = useDispatch();
 
@@ -38,7 +38,6 @@ const UsersList = memo(() => {
       )}
     </Flex>
   );
-});
+};
 
-UsersList.displayName = "UsersList";
 export default UsersList;

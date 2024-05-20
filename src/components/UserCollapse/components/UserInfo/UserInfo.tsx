@@ -203,6 +203,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
       <Flex vertical flex={1}>
         {userInfoFields.map(({ icon, label, name, required, value }) => (
           <EditableField
+            key={`${name}-${label}`}
             value={value}
             label={label}
             name={name}
@@ -217,6 +218,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
         <Flex vertical>
           {addressInfoFields.map(({ icon, label, name, required, value }) => (
             <EditableField
+              key={`${name}=${label}`}
               value={value}
               label={label}
               name={name}
@@ -229,6 +231,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
         </Flex>
         {geoInfoFields.map(({ icon, label, name, value }) => (
           <EditableField
+            key={`${name}=${label}`}
             value={value}
             label={label}
             name={name}
@@ -241,6 +244,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
       <Flex vertical flex={1}>
         {companyInfoFIelds.map(({ icon, label, name, value }) => (
           <EditableField
+            key={`${name}=${label}`}
             value={value}
             label={label}
             name={name}

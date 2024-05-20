@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useState, type FC } from "react";
+import { ChangeEvent, memo, useCallback, useState, type FC } from "react";
 import { useDispatch } from "react-redux";
 import FormOutlined from "@ant-design/icons/FormOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
@@ -33,15 +33,16 @@ const Post: FC<PostProps> = memo(({ postId }) => {
 
   const isChanged = JSON.stringify(innerPost) !== JSON.stringify(post);
 
-  const onChangeHandler = ({
-    target: { value, name },
-  }: ChangeEvent<HTMLInputElement>) =>
-    setInnerPost((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const onChangeHandler = useCallback(
+    ({ target: { value, name } }: ChangeEvent<HTMLInputElement>) =>
+      setInnerPost((prevState) => ({
+        ...prevState,
+        [name]: value,
+      })),
+    []
+  );
 
-  const onDeletePost = async () => {
+  const onDeletePost = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await postsAPI.deletePost(id);
@@ -53,11 +54,11 @@ const Post: FC<PostProps> = memo(({ postId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch, id]);
 
   const toggleEditMode = () => setEditMode((prevState) => !prevState);
 
-  const onEditPost = async () => {
+  const onEditPost = useCallback(async () => {
     if ([title, body].some((val) => !val.trim())) return;
     setIsLoading(true);
     try {
@@ -71,7 +72,7 @@ const Post: FC<PostProps> = memo(({ postId }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [body, dispatch, id, innerPost, title]);
 
   const onCancel = () => {
     setInnerPost(post);

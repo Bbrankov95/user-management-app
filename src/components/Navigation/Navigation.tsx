@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import TeamOutlined from "@ant-design/icons/TeamOutlined";
 import ProductOutlined from "@ant-design/icons/ProductOutlined";
 import Menu from "antd/es/menu";
@@ -9,29 +9,40 @@ import classes from "./Navigation.module.scss";
 
 const { Sider } = Layout;
 
+const routes = {
+  HOME: "/",
+  TASKS: "/tasks",
+};
+
+const { HOME, TASKS } = routes;
+
 const Navigation = memo(() => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const [selectedKey] =
+    Object.entries(routes).find(([, value]) => value === pathname) ?? [];
 
   return (
     <>
       <Sider width={200} breakpoint="md">
         <Menu
           className={classes.NavigationMenu}
-          defaultSelectedKeys={["home"]}
+          defaultSelectedKeys={[selectedKey ?? "home"]}
           theme="dark"
           mode="inline"
           items={[
             {
-              key: "home",
+              key: "HOME",
               label: "Home",
               icon: <TeamOutlined style={{ fontSize: 20 }} />,
-              onClick: () => navigate("/"),
+              onClick: () => navigate(HOME),
             },
             {
-              key: "tasks",
+              key: "TASKS",
               label: "Tasks",
               icon: <ProductOutlined style={{ fontSize: 20 }} />,
-              onClick: () => navigate("/tasks"),
+              onClick: () => navigate(TASKS),
             },
           ]}
         />

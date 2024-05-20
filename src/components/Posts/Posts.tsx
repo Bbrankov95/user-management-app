@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import Flex from "antd/es/flex";
@@ -12,7 +12,7 @@ import { insertPosts, selectPostsAllIds } from "store/slices/postsSlice";
 
 import { Post as UserPost } from "./components";
 
-const Posts = memo(() => {
+const Posts = () => {
   const dispatch = useDispatch();
   const postsAllIds = useAppSelector(selectPostsAllIds);
   const { id } = useParams() ?? {};
@@ -46,7 +46,6 @@ const Posts = memo(() => {
       )}
     </Flex>
   );
-});
+};
 
-Posts.displayName = "Posts";
 export default Posts;
