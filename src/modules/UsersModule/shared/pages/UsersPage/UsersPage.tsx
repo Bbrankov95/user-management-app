@@ -1,5 +1,6 @@
-import { UsersList } from "components";
 import { Route, Routes } from "react-router";
+
+import { UsersList } from "./components";
 
 const UsersRouter = () => {
   return (

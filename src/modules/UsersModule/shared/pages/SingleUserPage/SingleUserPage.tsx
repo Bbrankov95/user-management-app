@@ -1,50 +1,21 @@
-import { useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import Flex from "antd/es/flex";
 import Typography from "antd/es/typography";
 import Button from "antd/es/button";
 import Breadcrumb from "antd/es/breadcrumb";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
+import Spin from "antd/es/spin";
 
-import { Posts, UserCollapse } from "components";
-import { usersAPI } from "services";
-import { insertUsers } from "store/slices/usersSlice";
-import { disposePosts } from "store/slices/postsSlice";
-import { NavLink } from "react-router-dom";
+import { UserCollapse } from "modules/UsersModule/shared/components";
 import useFetchUser from "./shared/hooks/useFetchUser";
-import { Spin } from "antd";
+
+import { Posts } from "./components";
 
 const SingleUserPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams() ?? {};
   const [user, isLoading] = useFetchUser(Number(id));
-
-  const getUser = useCallback(async () => {
-    try {
-      if (id) {
-        const user = (await usersAPI.getUserById(Number(id))).data;
-        if (user) {
-          dispatch(insertUsers([user]));
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    if (!user) {
-      getUser();
-    }
-  }, [getUser, user]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(disposePosts());
-    };
-  }, [dispatch]);
 
   if (isLoading) {
     return <Spin size="large" />;

@@ -4,10 +4,10 @@ import Flex from "antd/es/flex";
 import Empty from "antd/es/empty";
 import Typography from "antd/es/typography";
 
-import { UserCollapse } from "components";
 import { usersAPI } from "services";
 import { useAppSelector } from "store";
 import { insertUsers, selectUsersAllIds } from "store/slices/usersSlice";
+import { UserCollapse } from "modules/UsersModule/shared/components";
 
 const UsersList = () => {
   const usersAllIds = useAppSelector(selectUsersAllIds);
