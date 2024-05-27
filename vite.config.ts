@@ -9,7 +9,6 @@ export default defineConfig({
       services: path.resolve(__dirname, "./src/services"),
       components: path.resolve(__dirname, "./src/components"),
       store: path.resolve(__dirname, "./src/store"),
-      types: path.resolve(__dirname, "./src/types"),
       modules: path.resolve(__dirname, "./src/modules"),
     },
   },

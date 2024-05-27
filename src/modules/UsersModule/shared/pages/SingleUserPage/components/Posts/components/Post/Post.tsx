@@ -7,23 +7,20 @@ import Button from "antd/es/button";
 import Flex from "antd/es/flex";
 
 import { ConfirmationModal, EditableField } from "components";
-import { useAppSelector } from "store";
 import { postsAPI } from "services";
-import { type Post } from "types";
-import {
-  selectPostById,
-  deletePost,
-  updatePost,
-} from "store/slices/postsSlice";
+
+import { deletePost, updatePost } from "store/slices/postsSlice";
 
 import classes from "./Post.module.scss";
 
-type PostProps = {
-  postId: Post["id"];
-};
+type PostProps = any;
 
-const Post: FC<PostProps> = memo(({ postId }) => {
-  const post = useAppSelector((state) => selectPostById(state, postId));
+const Post: FC<PostProps> = memo(() => {
+  const post = {
+    title: "",
+    body: "",
+    id: "",
+  };
   const [innerPost, setInnerPost] = useState(post);
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

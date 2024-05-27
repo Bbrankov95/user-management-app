@@ -20,10 +20,9 @@ import Flex from "antd/es/flex";
 import Button from "antd/es/button";
 
 import { EditableField } from "components";
-import { User } from "types";
+import { User } from "../../../../types";
 import { usersAPI } from "services";
-import { useDispatch } from "react-redux";
-import { updateUser } from "store/slices/usersSlice";
+// import { useDispatch } from "react-redux";
 
 type UserInfoProps = {
   user: User;
@@ -34,7 +33,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
     id,
     name,
@@ -63,7 +62,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
     setIsLoading(true);
     try {
       const updatedUser = (await usersAPI.updateUserById(id, innerUser)).data;
-      dispatch(updateUser({ id, updatedUser }));
+      console.log(updatedUser);
     } catch (error) {
       console.error(error);
     } finally {

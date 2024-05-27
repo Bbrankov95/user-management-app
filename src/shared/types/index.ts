@@ -1,3 +1,11 @@
+export type Task = {
+  id: number;
+  userId: number;
+  title: string;
+  completed: boolean;
+  user?: User;
+};
+
 export type User = {
   id: number;
   name: string;
@@ -25,25 +33,4 @@ type Company = {
   name: string;
   catchPhrase: string;
   bs: string;
-};
-
-export type Post = {
-  userId: User["id"];
-  id: number;
-  title: string;
-  body: string;
-};
-
-export type Todo = {
-  id: number;
-  userId: User["id"];
-  title: string;
-  completed: boolean;
-};
-
-export type NormalizedState<T> = {
-  byId: {
-    [K: number]: T;
-  };
-  allIds: number[];
 };

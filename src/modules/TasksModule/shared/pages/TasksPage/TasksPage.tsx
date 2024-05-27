@@ -1,4 +1,3 @@
-import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
 import CheckCircleOutline from "@ant-design/icons/CheckCircleOutlined";
@@ -6,22 +5,27 @@ import Flex from "antd/es/flex";
 import Table from "antd/es/table";
 import Button from "antd/es/button";
 
-import { tasksAPI, usersAPI } from "services";
-import { Todo } from "types";
 import { useAppSelector } from "store";
-import { insertUsers } from "store/slices/usersSlice";
-import { insertTodos, updateTodo } from "store/slices/todosSlice";
+import {
+  fetchTasksFailure,
+  fetchTasksSuccess,
+  selectTasks,
+  resetState,
+  fetchTasksInit,
+} from "../../slices/tasksSlice";
+import { useEffect } from "react";
+import { axiosInstance } from "services";
+import { Task, User } from "shared/types";
+import mapTaskWithUser from "../../utils/mapTaskWithUser";
 
 const TasksPage = () => {
-  const usersById = useAppSelector((state) => state.users.byId);
-  const todosById = useAppSelector((state) => state.todos.byId);
+  const { data: tasks } = useAppSelector(selectTasks);
   const dispatch = useDispatch();
-  const todos = Object.values(todosById).map((todo) => todo);
 
-  const filterOptionByOwner = Object.keys(usersById).map((key) => ({
-    value: key,
-    text: usersById[Number(key)].name,
-  }));
+  // const filterOptionByOwner = users.map((user) => ({
+  //   value: user.id,
+  //   text: user.name,
+  // }));
 
   const columns = [
     {
@@ -32,25 +36,23 @@ const TasksPage = () => {
     {
       title: "Owner",
       key: "userId",
-      dataIndex: "userId",
-      render: (userId: Todo["userId"]) => <p>{usersById?.[userId]?.name}</p>,
-      sorter: (a: Todo, b: Todo) =>
-        usersById[a.id]?.name > usersById[b.id]?.name ? 1 : -1,
-      onFilter: (value: boolean | React.Key, record: Todo) =>
-        Number(value) === record.userId,
-      filters: filterOptionByOwner,
+      dataIndex: "user",
+      render: (task: User) => <p>{task.name}</p>,
+      sorter: (a: Task, b: Task) => {
+        if (a.user?.name && b.user?.name) {
+          return a.user?.name > b.user?.name ? 1 : -1;
+        } else {
+          return 1;
+        }
+      },
+      // onFilter: (value: boolean | React.Key, record: Todo) =>
+      //   Number(value) === record.userId,
+      // filters: filterOptionByOwner,
     },
     {
       title: "Status",
       dataIndex: "completed",
       key: "completed",
-      render: (completed: Todo["completed"]) => {
-        if (completed) {
-          return <CheckCircleOutline style={{ fontSize: 20, color: "lime" }} />;
-        } else {
-          return <CloseCircleOutlined style={{ fontSize: 20, color: "red" }} />;
-        }
-      },
       filters: [
         {
           text: "Completed",
@@ -61,17 +63,24 @@ const TasksPage = () => {
           value: false,
         },
       ],
-      onFilter: (value: boolean | React.Key, record: Todo) =>
-        !!value === record.completed,
+      // onFilter: (value: boolean | React.Key, record: Todo) =>
+      //   !!value === record.completed,
+      render: (completed: Task["completed"]) => {
+        if (completed) {
+          return <CheckCircleOutline style={{ fontSize: 20, color: "lime" }} />;
+        } else {
+          return <CloseCircleOutlined style={{ fontSize: 20, color: "red" }} />;
+        }
+      },
     },
     {
       title: "",
       key: "button",
-      render: (todo: Todo) => (
+      render: (task: Task) => (
         <Button
           type="primary"
-          onClick={() => dispatch(updateTodo({ ...todo, completed: true }))}
-          disabled={todo.completed}
+          // onClick={() => dispatch(updateTodo({ ...todo, completed: true }))}
+          disabled={task.completed}
         >
           Complete
         </Button>
@@ -79,33 +88,33 @@ const TasksPage = () => {
     },
   ];
 
-  const dataSource = todos.map((todo) => ({ ...todo, key: todo.id }));
-
-  const getData = useCallback(async () => {
-    try {
-      if (!Object.keys(todosById).length) {
-        const todos = (await tasksAPI.getTasks()).data;
-        dispatch(insertTodos(todos));
-      }
-      if (!Object.keys(usersById).length) {
-        const users = (await usersAPI.getUsers()).data;
-        dispatch(insertUsers(users));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch, todosById, usersById]);
-
   useEffect(() => {
-    getData();
-  }, [getData]);
+    const fetchTasks = async () => {
+      dispatch(fetchTasksInit());
+      try {
+        const [{ data: tasks }, { data: users }] = await Promise.all([
+          axiosInstance.get("/todos"),
+          axiosInstance.get("/users"),
+        ]);
+        const mappedTasks = mapTaskWithUser({ tasks, users });
+        dispatch(fetchTasksSuccess(mappedTasks));
+      } catch (error) {
+        dispatch(fetchTasksFailure(error));
+      }
+    };
+    fetchTasks();
+
+    return () => {
+      dispatch(resetState());
+    };
+  }, [dispatch]);
 
   return (
     <Flex vertical flex={1}>
       <Table
         rowHoverable
         bordered
-        dataSource={dataSource}
+        dataSource={tasks}
         columns={columns}
         pagination={{ pageSizeOptions: [] }}
       />

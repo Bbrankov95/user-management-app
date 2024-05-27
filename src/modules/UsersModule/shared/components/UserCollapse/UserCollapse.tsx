@@ -1,19 +1,16 @@
 import { memo, type FC } from "react";
 import Collapse, { type CollapseProps } from "antd/es/collapse";
 
-import { User } from "types";
-import { useAppSelector } from "store";
-import { selectUserById } from "store/slices/usersSlice";
+import { User } from "../../types";
 import { UserInfo } from "./components";
 
 type UserCollapseProps = {
-  userId: User["id"];
+  user: User;
   defaultActiveKey?: CollapseProps["defaultActiveKey"];
 };
 
 const UserCollapse: FC<UserCollapseProps> = memo(
-  ({ userId, defaultActiveKey }) => {
-    const user = useAppSelector((state) => selectUserById(state, userId));
+  ({ user, defaultActiveKey }) => {
     const { id, name } = user ?? {};
 
     const items = [
