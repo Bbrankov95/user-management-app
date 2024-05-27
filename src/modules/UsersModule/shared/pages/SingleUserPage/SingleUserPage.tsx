@@ -9,16 +9,17 @@ import LeftOutlined from "@ant-design/icons/LeftOutlined";
 
 import { Posts, UserCollapse } from "components";
 import { usersAPI } from "services";
-import { useAppSelector } from "store";
-import { insertUsers, selectUserById } from "store/slices/usersSlice";
+import { insertUsers } from "store/slices/usersSlice";
 import { disposePosts } from "store/slices/postsSlice";
 import { NavLink } from "react-router-dom";
+import useFetchUser from "./shared/hooks/useFetchUser";
+import { Spin } from "antd";
 
 const SingleUserPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams() ?? {};
-  const user = useAppSelector((state) => selectUserById(state, Number(id)));
+  const [user, isLoading] = useFetchUser(Number(id));
 
   const getUser = useCallback(async () => {
     try {
@@ -44,6 +45,10 @@ const SingleUserPage = () => {
       dispatch(disposePosts());
     };
   }, [dispatch]);
+
+  if (isLoading) {
+    return <Spin size="large" />;
+  }
 
   if (user) {
     return (

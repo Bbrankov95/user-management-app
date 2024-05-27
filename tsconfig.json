@@ -23,9 +23,9 @@
       "types": [
         "types"
       ],
-      "pages": [
-        "pages"
-      ],
+      "modules": [
+        "modules"
+      ]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
