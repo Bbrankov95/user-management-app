@@ -19,7 +19,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const [selectedKey] =
+  const [selectedKey = "HOME"] =
     Object.entries(routes).find(([, value]) => value === pathname) ?? [];
 
   return (
@@ -27,7 +27,7 @@ const Navigation = () => {
       <Sider width={200} breakpoint="md">
         <Menu
           className={classes.NavigationMenu}
-          defaultSelectedKeys={[selectedKey ?? "home"]}
+          defaultSelectedKeys={[selectedKey]}
           theme="dark"
           mode="inline"
           items={[
