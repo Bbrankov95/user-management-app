@@ -1,9 +1,9 @@
-import { ChangeEvent,  useCallback, useState, type FC } from "react";
+import { ChangeEvent, useCallback, useState, type FC } from "react";
 import Flex from "antd/es/flex";
 
 import { ConfirmationModal, EditableField } from "components";
 import { Post as UserPost } from "modules/UsersModule/shared/types";
-import {Actions,EditActions} from '../'
+import { Actions, EditActions } from '../'
 import useUpdatePost from "../../../../shared/hooks/useUpdatePost";
 import useDeletePost from "../../../../shared/hooks/useDeletePost";
 
@@ -13,13 +13,13 @@ type PostProps = {
   post: UserPost
 };
 
-const Post: FC<PostProps> = ({post}) => {
+const Post: FC<PostProps> = ({ post }) => {
   const [innerPost, setInnerPost] = useState(post);
   const [editMode, setEditMode] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [updatePost, isUpdatePending] = useUpdatePost();
   const [deletePost] = useDeletePost();
-  const { title, body,id: postId } = innerPost;
+  const { title, body, id: postId } = innerPost;
 
   const isChanged = JSON.stringify(innerPost) !== JSON.stringify(post);
 
@@ -40,7 +40,7 @@ const Post: FC<PostProps> = ({post}) => {
   };
 
   const onEdit = () => {
-    updatePost(postId,innerPost)
+    updatePost(postId, innerPost)
     setEditMode(false)
   }
 
@@ -71,7 +71,7 @@ const Post: FC<PostProps> = ({post}) => {
       />
       <Flex gap={10} justify="center">
         {editMode ? (
-         <EditActions disabled={!isChanged || isUpdatePending} onEdit={onEdit} onCancel={onCancel}/>
+          <EditActions disabled={!isChanged || !isChanged && isUpdatePending} onEdit={onEdit} onCancel={onCancel} />
         ) : (
           <Actions onEdit={toggleEditMode} onDelete={() => setConfirmationModal(true)} />
         )}

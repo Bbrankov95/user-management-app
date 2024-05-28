@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { NavLink } from "react-router-dom";
 import Flex from "antd/es/flex";
@@ -10,12 +12,27 @@ import Spin from "antd/es/spin";
 import { UserCollapse } from "modules/UsersModule/shared/components";
 import useFetchUser from "./shared/hooks/useFetchUser";
 
+import { useAppSelector } from "shared/store";
 import { Posts } from "./components";
+import { fetchUsersSuccess, selectUserById, selectUsers } from "../../slices/usersSlice";
 
 const SingleUserPage = () => {
   const navigate = useNavigate();
   const { id } = useParams() ?? {};
-  const [user, isLoading] = useFetchUser(Number(id));
+  const [fetchUser, isLoading] = useFetchUser(Number(id));
+  const user = useAppSelector(state => selectUserById(state, Number(id)))
+  const { hasFetched } = useAppSelector(selectUsers)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!hasFetched) {
+      const insertUser = async () => {
+        const user = await fetchUser()
+        dispatch(fetchUsersSuccess([user]))
+      }
+      insertUser()
+    }
+  }, [user])
 
   if (isLoading) {
     return <Spin size="large" />;
@@ -39,7 +56,7 @@ const SingleUserPage = () => {
             },
           ]}
         />
-        <UserCollapse user={user} defaultActiveKey={[id ?? 0]} />
+        <UserCollapse user={user} defaultActiveKey={[id ?? "HOME"]} />
         <Posts />
       </Flex>
     );

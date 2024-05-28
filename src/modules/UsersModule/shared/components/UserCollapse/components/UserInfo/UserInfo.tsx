@@ -1,27 +1,11 @@
-import { ChangeEvent,  useCallback, useState, type FC } from "react";
+import { ChangeEvent, useCallback, useState, type FC } from "react";
 import { useNavigate, useParams } from "react-router";
-import {
-  BankOutlined,
-  CompassOutlined,
-  EnvironmentOutlined,
-  FieldNumberOutlined,
-  FormOutlined,
-  FundProjectionScreenOutlined,
-  GlobalOutlined,
-  HomeOutlined,
-  MailOutlined,
-  MessageOutlined,
-  PhoneOutlined,
-  SignatureOutlined,
-  UndoOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import Flex from "antd/es/flex";
-import Button from "antd/es/button";
 
-import { EditableField } from "components";
+import Flex from "antd/es/flex";
+
 import { User } from "shared/types";
 import useUpdateUser from "modules/UsersModule/shared/hooks/useUpdateUser";
+import { PersonalInfoColumn, AdressColumn, CompanyColumn, GeoColumn, Actions, EditActions } from "./components";
 
 type UserInfoProps = {
   user: User;
@@ -31,30 +15,15 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const [innerUser, setInnerUser] = useState(user);
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
-  const {
-    id,
-    name,
-    phone,
-    email,
-    website,
-    address: {
-      city,
-      geo: { lat, lng },
-      street,
-      suite,
-      zipcode,
-    },
-    company: { bs, catchPhrase, name: companyName },
-  } = innerUser ?? {};
   const { id: userId } = useParams() ?? {};
-  const [updatedUser,isLoading] = useUpdateUser()
+  const [updatedUser, isLoading] = useUpdateUser()
   const isChanged = JSON.stringify(innerUser) !== JSON.stringify(user);
-  const shouldDisableSubmit = !isChanged || isLoading;
+  const shouldDisableSubmit = !isChanged || !isChanged && isLoading;
 
   const toggleEditMode = () => setEditMode((prevState) => !prevState);
 
   const onEditUser = async () => {
-    updatedUser(Number(userId ? userId : id),innerUser)
+    updatedUser(Number(userId ? userId : innerUser.id), innerUser)
     toggleEditMode()
   };
 
@@ -91,186 +60,38 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
   );
 
   const onGeoInfoChange = useCallback(
-    ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) =>
+    ({ target: { name, value } }: ChangeEvent<HTMLInputElement>) => {
       setInnerUser((prevState) => ({
         ...prevState,
         address: {
           ...prevState.address,
           geo: { ...prevState.address.geo, [name]: value },
         },
-      })),
+      }))
+    }
+    ,
     []
   );
 
   const onSeePostsHandler = () => navigate(`/users/${user.id}`);
 
-  const userInfoFields = [
-    {
-      name: "name",
-      value: name,
-      label: "Username",
-      required: true,
-      icon: <UserOutlined />,
-    },
-    {
-      name: "email",
-      value: email,
-      label: "Email",
-      required: true,
-      icon: <MailOutlined />,
-    },
-    {
-      name: "phone",
-      value: phone,
-      label: "Phone",
-      icon: <PhoneOutlined />,
-    },
-    {
-      name: "website",
-      value: website,
-      label: "Website",
-      icon: <GlobalOutlined />,
-    },
-  ];
-
-  const companyInfoFIelds = [
-    {
-      name: "name",
-      value: companyName,
-      label: "Company Name",
-      icon: <BankOutlined />,
-    },
-    {
-      name: "name",
-      value: catchPhrase,
-      label: "Catch Phrase",
-      icon: <SignatureOutlined />,
-    },
-    {
-      name: "bs",
-      value: bs,
-      label: "Business",
-      icon: <FundProjectionScreenOutlined />,
-    },
-  ];
-
-  const geoInfoFields = [
-    { name: "lng", value: lng, label: "Longitude", icon: <CompassOutlined /> },
-    { name: "lat", value: lat, label: "Latitude", icon: <CompassOutlined /> },
-  ];
-
-  const addressInfoFields = [
-    {
-      name: "city",
-      value: city,
-      label: "City",
-      icon: <HomeOutlined />,
-      required: true,
-    },
-    {
-      name: "street",
-      value: street,
-      label: "Street",
-      icon: <EnvironmentOutlined />,
-      required: true,
-    },
-    {
-      name: "suite",
-      value: suite,
-      label: "Suite",
-      icon: <FieldNumberOutlined />,
-      required: true,
-    },
-    { name: "zipcode", value: zipcode, label: "Zip Code" },
-  ];
-
   return (
     <Flex gap={10}>
       <Flex vertical flex={1}>
-        {userInfoFields.map(({ icon, label, name, required, value }) => (
-          <EditableField
-            key={`${name}-${label}`}
-            value={value}
-            label={label}
-            name={name}
-            required={required}
-            icon={icon}
-            editMode={editMode}
-            onEdit={onPersonalInfoChange}
-          />
-        ))}
+        <PersonalInfoColumn editMode={editMode} user={innerUser} onColumnChange={onPersonalInfoChange} />
       </Flex>
       <Flex vertical flex={1}>
-        <Flex vertical>
-          {addressInfoFields.map(({ icon, label, name, required, value }) => (
-            <EditableField
-              key={`${name}=${label}`}
-              value={value}
-              label={label}
-              name={name}
-              required={required}
-              icon={icon}
-              editMode={editMode}
-              onEdit={onAddressInfoChange}
-            />
-          ))}
-        </Flex>
-        {geoInfoFields.map(({ icon, label, name, value }) => (
-          <EditableField
-            key={`${name}=${label}`}
-            value={value}
-            label={label}
-            name={name}
-            icon={icon}
-            onEdit={onGeoInfoChange}
-            editMode={editMode}
-          />
-        ))}
+        <AdressColumn editMode={editMode} user={innerUser} onColumnChange={onAddressInfoChange} />
+        <GeoColumn editMode={editMode} user={innerUser} onColumnChange={onGeoInfoChange} />
       </Flex>
       <Flex vertical flex={1}>
-        {companyInfoFIelds.map(({ icon, label, name, value }) => (
-          <EditableField
-            key={`${name}=${label}`}
-            value={value}
-            label={label}
-            name={name}
-            icon={icon}
-            onEdit={onCompanyInfoChange}
-            editMode={editMode}
-          />
-        ))}
+        <CompanyColumn editMode={editMode} user={innerUser} onColumnChange={onCompanyInfoChange} />
       </Flex>
       <Flex vertical>
         {editMode ? (
-          <>
-            <Button
-              icon={<FormOutlined />}
-              disabled={shouldDisableSubmit}
-              onClick={onEditUser}
-              type="primary"
-              loading={isLoading}
-            >
-              Submit
-            </Button>
-            <Button icon={<UndoOutlined />} onClick={onCancel}>
-              Cancel
-            </Button>
-          </>
+          <EditActions disabled={shouldDisableSubmit} onCancel={onCancel} onEdit={onEditUser} />
         ) : (
-          <>
-            {!userId ? (
-              <Button
-                icon={<MessageOutlined />}
-                onClick={onSeePostsHandler}
-                type="primary"
-              >
-                See Posts
-              </Button>
-            ) : null}
-            <Button icon={<FormOutlined />} onClick={toggleEditMode}>
-              Edit
-            </Button>
-          </>
+          <Actions onEdit={toggleEditMode} onSeePosts={onSeePostsHandler} />
         )}
       </Flex>
     </Flex>

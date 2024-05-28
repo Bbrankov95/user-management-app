@@ -38,19 +38,19 @@ const usersSlice = createSlice({
     resetState: () => {
       return initialState;
     },
-    updateUser: (state,action) => {
+    updateUser: (state, action) => {
       state.data = state.data.map(user => user.id === action.payload.id ? action.payload : user)
     }
   },
 });
 
 export const selectUsers = (state: RootState) => state.users;
-
+export const selectUserById = (state: RootState, userId: number) => state.users.data.find(user => user.id === userId)
 export const {
   fetchUsersFailure,
   fetchUsersInit,
   fetchUsersSuccess,
   resetState,
-  updateUser
+  updateUser,
 } = usersSlice.actions;
 export default usersSlice.reducer;
