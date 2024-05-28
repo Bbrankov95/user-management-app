@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import TeamOutlined from "@ant-design/icons/TeamOutlined";
 import ProductOutlined from "@ant-design/icons/ProductOutlined";
@@ -16,7 +15,7 @@ const routes = {
 
 const { HOME, TASKS } = routes;
 
-const Navigation = memo(() => {
+const Navigation = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -49,7 +48,7 @@ const Navigation = memo(() => {
       </Sider>
     </>
   );
-});
+};
 
 Navigation.displayName = "Navigation";
 export default Navigation;

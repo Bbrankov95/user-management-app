@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useCallback, useState, type FC } from "react";
+import { ChangeEvent,  useCallback, useState, type FC } from "react";
 import { useNavigate, useParams } from "react-router";
 import {
   BankOutlined,
@@ -27,7 +27,7 @@ type UserInfoProps = {
   user: User;
 };
 
-const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
+const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const [innerUser, setInnerUser] = useState(user);
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
@@ -275,7 +275,7 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
       </Flex>
     </Flex>
   );
-});
+};
 
 UserInfo.displayName = "UserInfo";
 export default UserInfo;

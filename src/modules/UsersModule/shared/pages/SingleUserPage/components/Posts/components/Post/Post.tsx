@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, useCallback, useState, type FC } from "react";
+import { ChangeEvent,  useCallback, useState, type FC } from "react";
 import Flex from "antd/es/flex";
 
 import { ConfirmationModal, EditableField } from "components";
@@ -13,7 +13,7 @@ type PostProps = {
   post: UserPost
 };
 
-const Post: FC<PostProps> = memo(({post}) => {
+const Post: FC<PostProps> = ({post}) => {
   const [innerPost, setInnerPost] = useState(post);
   const [editMode, setEditMode] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
@@ -85,7 +85,7 @@ const Post: FC<PostProps> = memo(({post}) => {
       />
     </Flex>
   );
-});
+}
 
 Post.displayName = "Post";
 export default Post;
