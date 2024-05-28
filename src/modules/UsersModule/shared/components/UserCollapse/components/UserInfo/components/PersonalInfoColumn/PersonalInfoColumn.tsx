@@ -1,6 +1,6 @@
 import { type ChangeEvent } from "react";
 import { Flex } from "antd";
-import { EditableField } from "components";
+import { EditableField } from "modules/UsersModule/shared/components"
 import { User } from "shared/types";
 
 import { UserOutlined, MailOutlined, PhoneOutlined, GlobalOutlined } from '@ant-design/icons';

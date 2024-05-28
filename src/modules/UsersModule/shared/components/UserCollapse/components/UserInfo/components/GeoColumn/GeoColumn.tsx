@@ -1,5 +1,5 @@
 import { Flex } from "antd"
-import { EditableField } from "components"
+import { EditableField } from "modules/UsersModule/shared/components"
 import { CompassOutlined } from "@ant-design/icons";
 
 import type { Column } from "../../shared/types";

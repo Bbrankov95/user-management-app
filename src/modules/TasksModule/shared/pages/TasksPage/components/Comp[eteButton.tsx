@@ -1,17 +1,17 @@
 import Button from "antd/es/button";
-import { Task } from "shared/types";
 import useCompleteTodo from "modules/TasksModule/shared/hooks/useCompleteTodo";
+import type { Task } from "../../../types";
 
 
 type CompleteButtonProps = {
-    taskId: Task['id'];
-    disabled: boolean;
+  taskId: Task['id'];
+  disabled: boolean;
 }
 
-const CompleteButton:React.FC<CompleteButtonProps> = ({taskId,disabled}) => {
-    const [completeTodo] = useCompleteTodo()
+const CompleteButton: React.FC<CompleteButtonProps> = ({ taskId, disabled }) => {
+  const [completeTodo] = useCompleteTodo()
 
-    return  <Button
+  return <Button
     type="primary"
     onClick={() => completeTodo(taskId)}
     disabled={disabled}

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { type RootState } from "shared/store";
 
-import type { Task } from "shared/types";
+import type { Task } from "../types";
 
 type IState = {
   data: Task[];
@@ -39,8 +39,8 @@ const tasksSlice = createSlice({
     resetState: () => {
       return initialState;
     },
-    completeTask: (state,action) => {
-      state.data = state.data.map(task => task.id === action.payload ? {...task,completed: true} : task)
+    completeTask: (state, action) => {
+      state.data = state.data.map(task => task.id === action.payload ? { ...task, completed: true } : task)
     }
   },
 });

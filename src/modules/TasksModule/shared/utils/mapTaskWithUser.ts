@@ -1,5 +1,4 @@
-import { Task } from "shared/types";
-
+import type { Task } from "../types";
 import type { User } from "shared/types";
 
 const mapTaskWithUser = ({

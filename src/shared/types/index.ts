@@ -1,10 +1,4 @@
-export type Task = {
-  id: number;
-  userId: number;
-  title: string;
-  completed: boolean;
-  user?: User;
-};
+
 
 export type User = {
   id: number;

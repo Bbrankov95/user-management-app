@@ -1,5 +1,5 @@
 import { Flex } from "antd";
-import { EditableField } from "components";
+import { EditableField } from "modules/UsersModule/shared/components"
 import { type ChangeEvent } from "react";
 import { User } from "shared/types";
 
