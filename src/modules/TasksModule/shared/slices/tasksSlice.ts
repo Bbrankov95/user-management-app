@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { type RootState } from "store";
+import { type RootState } from "shared/store";
 
 import type { Task } from "shared/types";
 
@@ -39,6 +39,9 @@ const tasksSlice = createSlice({
     resetState: () => {
       return initialState;
     },
+    completeTask: (state,action) => {
+      state.data = state.data.map(task => task.id === action.payload ? {...task,completed: true} : task)
+    }
   },
 });
 
@@ -48,5 +51,6 @@ export const {
   fetchTasksInit,
   fetchTasksSuccess,
   resetState,
+  completeTask
 } = tasksSlice.actions;
 export default tasksSlice.reducer;

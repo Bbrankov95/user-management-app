@@ -1,11 +1,10 @@
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
-import CheckCircleOutline from "@ant-design/icons/CheckCircleOutlined";
 import Flex from "antd/es/flex";
 import Table from "antd/es/table";
-import Button from "antd/es/button";
 
-import { useAppSelector } from "store";
+import { useAppSelector } from "shared/store";
+import { axiosInstance } from "services";
 import {
   fetchTasksFailure,
   fetchTasksSuccess,
@@ -13,80 +12,13 @@ import {
   resetState,
   fetchTasksInit,
 } from "../../slices/tasksSlice";
-import { useEffect } from "react";
-import { axiosInstance } from "services";
-import { Task, User } from "shared/types";
 import mapTaskWithUser from "../../utils/mapTaskWithUser";
+import columns from "./columns";
 
 const TasksPage = () => {
   const { data: tasks } = useAppSelector(selectTasks);
+  const [filterOptionByOwner,setFilterOptionByOwner] = useState([])
   const dispatch = useDispatch();
-
-  // const filterOptionByOwner = users.map((user) => ({
-  //   value: user.id,
-  //   text: user.name,
-  // }));
-
-  const columns = [
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "Owner",
-      key: "userId",
-      dataIndex: "user",
-      render: (task: User) => <p>{task.name}</p>,
-      sorter: (a: Task, b: Task) => {
-        if (a.user?.name && b.user?.name) {
-          return a.user?.name > b.user?.name ? 1 : -1;
-        } else {
-          return 1;
-        }
-      },
-      // onFilter: (value: boolean | React.Key, record: Todo) =>
-      //   Number(value) === record.userId,
-      // filters: filterOptionByOwner,
-    },
-    {
-      title: "Status",
-      dataIndex: "completed",
-      key: "completed",
-      filters: [
-        {
-          text: "Completed",
-          value: true,
-        },
-        {
-          text: "Not Completed",
-          value: false,
-        },
-      ],
-      // onFilter: (value: boolean | React.Key, record: Todo) =>
-      //   !!value === record.completed,
-      render: (completed: Task["completed"]) => {
-        if (completed) {
-          return <CheckCircleOutline style={{ fontSize: 20, color: "lime" }} />;
-        } else {
-          return <CloseCircleOutlined style={{ fontSize: 20, color: "red" }} />;
-        }
-      },
-    },
-    {
-      title: "",
-      key: "button",
-      render: (task: Task) => (
-        <Button
-          type="primary"
-          // onClick={() => dispatch(updateTodo({ ...todo, completed: true }))}
-          disabled={task.completed}
-        >
-          Complete
-        </Button>
-      ),
-    },
-  ];
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -96,6 +28,11 @@ const TasksPage = () => {
           axiosInstance.get("/todos"),
           axiosInstance.get("/users"),
         ]);
+        const filterOptionByOwner = users.map((user: any) => ({
+          value: user.id,
+          text: user.name,
+        }));
+        setFilterOptionByOwner(filterOptionByOwner)
         const mappedTasks = mapTaskWithUser({ tasks, users });
         dispatch(fetchTasksSuccess(mappedTasks));
       } catch (error) {
@@ -115,7 +52,7 @@ const TasksPage = () => {
         rowHoverable
         bordered
         dataSource={tasks}
-        columns={columns}
+        columns={columns(filterOptionByOwner)}
         pagination={{ pageSizeOptions: [] }}
       />
     </Flex>

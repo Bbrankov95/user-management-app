@@ -8,7 +8,7 @@ export default defineConfig({
     alias: {
       services: path.resolve(__dirname, "./src/services"),
       components: path.resolve(__dirname, "./src/components"),
-      store: path.resolve(__dirname, "./src/store"),
+      shared: path.resolve(__dirname, "./src/shared"),
       modules: path.resolve(__dirname, "./src/modules"),
     },
   },

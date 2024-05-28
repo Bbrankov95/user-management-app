@@ -17,8 +17,8 @@
       "components": [
         "components"
       ],
-      "store": [
-        "store"
+      "shared": [
+        "shared"
       ],
       "modules": [
         "modules"
