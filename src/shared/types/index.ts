@@ -1,15 +1,3 @@
-
-
-export type User = {
-  id: number;
-  name: string;
-  email: string;
-  address: Address;
-  phone: string;
-  website: string;
-  company: Company;
-};
-
 type Address = {
   street: string;
   suite: string;
@@ -27,4 +15,21 @@ type Company = {
   name: string;
   catchPhrase: string;
   bs: string;
+};
+
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  address: Address;
+  phone: string;
+  website: string;
+  company: Company;
+};
+
+
+export type Page = {
+  name: string;
+  path: string;
 };

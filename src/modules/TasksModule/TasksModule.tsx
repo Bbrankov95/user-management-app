@@ -2,11 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { Result } from "antd";
 
 import { TasksPage } from "./shared/pages";
-
-type Page = {
-  name: string;
-  path: string;
-};
+import type { Page } from 'shared/types'
 
 const pages: Page[] = [
   {

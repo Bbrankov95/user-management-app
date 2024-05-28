@@ -1,12 +1,8 @@
 import { Navigate, Route, Routes } from "react-router";
 import { Result } from "antd";
 
+import { Page } from 'shared/types'
 import { SingleUserPage, UsersPage } from "./shared/pages";
-
-type Page = {
-  name: string;
-  path: string;
-};
 
 const pages: Page[] = [
   {
