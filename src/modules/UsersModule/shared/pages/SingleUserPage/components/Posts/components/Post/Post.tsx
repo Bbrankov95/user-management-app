@@ -1,32 +1,27 @@
 import { ChangeEvent, memo, useCallback, useState, type FC } from "react";
-import { useDispatch } from "react-redux";
 import FormOutlined from "@ant-design/icons/FormOutlined";
 import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-import UndoOutlined from "@ant-design/icons/UndoOutlined";
 import Button from "antd/es/button";
 import Flex from "antd/es/flex";
 
 import { ConfirmationModal, EditableField } from "components";
-import { postsAPI } from "services";
-
-import { deletePost, updatePost } from "store/slices/postsSlice";
-
 import classes from "./Post.module.scss";
+import { Post as UserPost } from "modules/UsersModule/shared/types";
+import useUpdatePost from "../../../../shared/hooks/useUpdatePost";
+import useDeletePost from "../../../../shared/hooks/useDeletePost";
+import EditActions from "../EditActions/EditActions";
 
-type PostProps = any;
+type PostProps = {
+  post: UserPost
+};
 
-const Post: FC<PostProps> = memo(() => {
-  const post = {
-    title: "",
-    body: "",
-    id: "",
-  };
+const Post: FC<PostProps> = memo(({post}) => {
   const [innerPost, setInnerPost] = useState(post);
   const [editMode, setEditMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
-  const dispatch = useDispatch();
-  const { title, body, id } = innerPost;
+  const [updatePost, isUpdatePending] = useUpdatePost();
+  const [deletePost, isDeletePending] = useDeletePost();
+  const { title, body,id: postId } = innerPost;
 
   const isChanged = JSON.stringify(innerPost) !== JSON.stringify(post);
 
@@ -39,47 +34,22 @@ const Post: FC<PostProps> = memo(() => {
     []
   );
 
-  const onDeletePost = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const res = await postsAPI.deletePost(id);
-      if (res.status === 200) {
-        dispatch(deletePost(id));
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [dispatch, id]);
-
   const toggleEditMode = () => setEditMode((prevState) => !prevState);
-
-  const onEditPost = useCallback(async () => {
-    if ([title, body].some((val) => !val.trim())) return;
-    setIsLoading(true);
-    try {
-      const res = await postsAPI.updatePost(id, innerPost);
-      if (res) {
-        dispatch(updatePost({ postId: id, updatedPost: innerPost }));
-        toggleEditMode();
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [body, dispatch, id, innerPost, title]);
 
   const onCancel = () => {
     setInnerPost(post);
     toggleEditMode();
   };
 
+  const onEdit = () => {
+    updatePost(postId,innerPost)
+    setEditMode(false)
+  }
+
   const onModalCancel = () => setConfirmationModal(false);
 
   const onModalConfirm = () => {
-    onDeletePost();
+    deletePost(postId)
     setConfirmationModal(false);
   };
 
@@ -103,24 +73,7 @@ const Post: FC<PostProps> = memo(() => {
       />
       <Flex gap={10} justify="center">
         {editMode ? (
-          <>
-            <Button
-              icon={<FormOutlined />}
-              disabled={!isChanged}
-              onClick={onEditPost}
-              loading={isLoading}
-            >
-              Submit
-            </Button>
-            <Button
-              danger
-              type="primary"
-              icon={<UndoOutlined />}
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          </>
+         <EditActions disabled={!isChanged || isUpdatePending} onEdit={onEdit} onCancel={onCancel}/>
         ) : (
           <>
             <Button icon={<FormOutlined />} onClick={toggleEditMode}>
@@ -131,8 +84,7 @@ const Post: FC<PostProps> = memo(() => {
               danger
               type="primary"
               onClick={() => setConfirmationModal(true)}
-              loading={isLoading}
-              disabled={isLoading}
+              disabled={isDeletePending}
             >
               Delete
             </Button>

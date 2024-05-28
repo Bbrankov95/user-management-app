@@ -1,7 +1,7 @@
 import { memo, type FC } from "react";
 import Collapse, { type CollapseProps } from "antd/es/collapse";
 
-import { User } from "../../types";
+import { User } from "shared/types";
 import { UserInfo } from "./components";
 
 type UserCollapseProps = {

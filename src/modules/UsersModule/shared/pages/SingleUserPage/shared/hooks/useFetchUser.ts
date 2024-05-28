@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { axiosInstance } from "services";
-import { User } from "types";
+import type { User } from "shared/types";
+
 
 const useFetchUser = (userId: User["id"]) => {
   const [user, setUser] = useState<User>({} as User);
@@ -8,8 +9,8 @@ const useFetchUser = (userId: User["id"]) => {
 
   const fetchUser = useCallback(async () => {
     try {
-      const { data } = await axiosInstance.get(`/users/${userId}`);
-      setUser(data);
+      const {data: user} = await axiosInstance.get(`/users/${userId}`)
+      setUser(user);
     } catch (error) {
       console.error(error);
     } finally {

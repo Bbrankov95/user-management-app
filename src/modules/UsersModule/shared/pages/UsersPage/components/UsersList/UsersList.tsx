@@ -4,7 +4,7 @@ import Flex from "antd/es/flex";
 import Empty from "antd/es/empty";
 import Typography from "antd/es/typography";
 
-import { useAppSelector } from "store";
+import { useAppSelector } from "shared/store";
 import {
   selectUsers,
   fetchUsersFailure,
@@ -14,6 +14,7 @@ import {
 } from "../../../../slices/usersSlice";
 import { UserCollapse } from "modules/UsersModule/shared/components";
 import { axiosInstance } from "services";
+
 
 const UsersList = () => {
   const { data: users } = useAppSelector(selectUsers);

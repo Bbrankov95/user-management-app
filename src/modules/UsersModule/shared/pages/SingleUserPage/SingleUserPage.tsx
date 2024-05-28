@@ -39,7 +39,7 @@ const SingleUserPage = () => {
             },
           ]}
         />
-        <UserCollapse userId={Number(id)} defaultActiveKey={[id ?? 0]} />
+        <UserCollapse user={user} defaultActiveKey={[id ?? 0]} />
         <Posts />
       </Flex>
     );

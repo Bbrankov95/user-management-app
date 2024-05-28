@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { axiosInstance } from "services";
-import { User, Post as UserPost } from "types";
+import type {Post} from '../../../../types'
 
-const useFetchPosts = (userId: User["id"]) => {
-  const [posts, setPosts] = useState<UserPost[]>([]);
+const useFetchPosts = (userId: number) => {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPosts = useCallback(async () => {
     try {
-      const { data } = await axiosInstance.get(`/users/${userId}`);
+      const { data } = await axiosInstance.get(`/posts?userId=${userId}`);
       setPosts(data);
     } catch (error) {
       console.error(error);
