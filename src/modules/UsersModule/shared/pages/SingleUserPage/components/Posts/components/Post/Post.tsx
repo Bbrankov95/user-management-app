@@ -1,15 +1,13 @@
 import { ChangeEvent, memo, useCallback, useState, type FC } from "react";
-import FormOutlined from "@ant-design/icons/FormOutlined";
-import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
-import Button from "antd/es/button";
 import Flex from "antd/es/flex";
 
 import { ConfirmationModal, EditableField } from "components";
-import classes from "./Post.module.scss";
 import { Post as UserPost } from "modules/UsersModule/shared/types";
+import {Actions,EditActions} from '../'
 import useUpdatePost from "../../../../shared/hooks/useUpdatePost";
 import useDeletePost from "../../../../shared/hooks/useDeletePost";
-import EditActions from "../EditActions/EditActions";
+
+import classes from "./Post.module.scss";
 
 type PostProps = {
   post: UserPost
@@ -20,7 +18,7 @@ const Post: FC<PostProps> = memo(({post}) => {
   const [editMode, setEditMode] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [updatePost, isUpdatePending] = useUpdatePost();
-  const [deletePost, isDeletePending] = useDeletePost();
+  const [deletePost] = useDeletePost();
   const { title, body,id: postId } = innerPost;
 
   const isChanged = JSON.stringify(innerPost) !== JSON.stringify(post);
@@ -75,20 +73,7 @@ const Post: FC<PostProps> = memo(({post}) => {
         {editMode ? (
          <EditActions disabled={!isChanged || isUpdatePending} onEdit={onEdit} onCancel={onCancel}/>
         ) : (
-          <>
-            <Button icon={<FormOutlined />} onClick={toggleEditMode}>
-              Edit
-            </Button>
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              type="primary"
-              onClick={() => setConfirmationModal(true)}
-              disabled={isDeletePending}
-            >
-              Delete
-            </Button>
-          </>
+          <Actions onEdit={toggleEditMode} onDelete={() => setConfirmationModal(true)} />
         )}
       </Flex>
       <ConfirmationModal

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "shared/store";
 
-import type { User } from "../types";
+import type { User } from "shared/types";
 
 type IState = {
   data: User[];
@@ -38,6 +38,9 @@ const usersSlice = createSlice({
     resetState: () => {
       return initialState;
     },
+    updateUser: (state,action) => {
+      state.data = state.data.map(user => user.id === action.payload.id ? action.payload : user)
+    }
   },
 });
 
@@ -48,5 +51,6 @@ export const {
   fetchUsersInit,
   fetchUsersSuccess,
   resetState,
+  updateUser
 } = usersSlice.actions;
 export default usersSlice.reducer;

@@ -20,9 +20,8 @@ import Flex from "antd/es/flex";
 import Button from "antd/es/button";
 
 import { EditableField } from "components";
-import { User } from "../../../../types";
-import { usersAPI } from "services";
-// import { useDispatch } from "react-redux";
+import { User } from "shared/types";
+import useUpdateUser from "modules/UsersModule/shared/hooks/useUpdateUser";
 
 type UserInfoProps = {
   user: User;
@@ -31,9 +30,7 @@ type UserInfoProps = {
 const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
   const [innerUser, setInnerUser] = useState(user);
   const [editMode, setEditMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const {
     id,
     name,
@@ -50,25 +47,15 @@ const UserInfo: FC<UserInfoProps> = memo(({ user }) => {
     company: { bs, catchPhrase, name: companyName },
   } = innerUser ?? {};
   const { id: userId } = useParams() ?? {};
-
+  const [updatedUser,isLoading] = useUpdateUser()
   const isChanged = JSON.stringify(innerUser) !== JSON.stringify(user);
   const shouldDisableSubmit = !isChanged || isLoading;
 
   const toggleEditMode = () => setEditMode((prevState) => !prevState);
 
   const onEditUser = async () => {
-    if ([name, email, city, street, suite].some((value) => !value.trim()))
-      return;
-    setIsLoading(true);
-    try {
-      const updatedUser = (await usersAPI.updateUserById(id, innerUser)).data;
-      console.log(updatedUser);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-      setEditMode(false);
-    }
+    updatedUser(Number(userId ? userId : id),innerUser)
+    toggleEditMode()
   };
 
   const onCancel = () => {
