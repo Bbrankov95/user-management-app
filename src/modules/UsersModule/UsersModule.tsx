@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router";
 import { Result } from "antd";
 
-import { Page } from 'shared/types'
+import { type Page, PageNames } from 'shared/types'
 import { SingleUserPage, UsersPage } from "./shared/pages";
 
 const pages: Page[] = [
@@ -17,9 +17,9 @@ const pages: Page[] = [
 
 const renderPage = (page: Page) => {
   switch (page.name) {
-    case "Users":
+    case PageNames.USERS:
       return <UsersPage />;
-    case "Single User":
+    case PageNames.SINGLE_USER:
       return <SingleUserPage />;
     default:
       return <Result.PRESENTED_IMAGE_404 />;

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { Result } from "antd";
 
 import { TasksPage } from "./shared/pages";
-import type { Page } from 'shared/types'
+import { type Page, PageNames } from 'shared/types'
 
 const pages: Page[] = [
   {
@@ -13,7 +13,7 @@ const pages: Page[] = [
 
 const renderPage = (page: Page) => {
   switch (page.name) {
-    case "Tasks":
+    case PageNames.TASKS:
       return <TasksPage />;
     default:
       return <Result.PRESENTED_IMAGE_404 />;
