@@ -53,4 +53,4 @@ export const {
   resetState,
   updateUser,
 } = usersSlice.actions;
-export default usersSlice.reducer;
+export const {reducer: usersReducer} = usersSlice;

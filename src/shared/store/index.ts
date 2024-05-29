@@ -6,12 +6,12 @@ import {
   AnyAction,
 } from "@reduxjs/toolkit";
 
-import taskModuleReducer from "pages/TasksPage/tasksSlice";
-import usersModuleReducer from "pages/UsersPage/shared/slices/usersSlice";
+import {tasksReducer} from "pages/TasksPage/tasksSlice";
+import {usersReducer} from "pages/UsersPage/shared/slices/usersSlice";
 
 const combinedReducers = combineReducers({
-  users: usersModuleReducer,
-  tasks: taskModuleReducer,
+  users: usersReducer,
+  tasks: tasksReducer,
 });
 
 const store = configureStore({

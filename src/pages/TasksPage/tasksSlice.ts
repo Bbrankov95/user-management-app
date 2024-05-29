@@ -53,4 +53,4 @@ export const {
   resetState,
   completeTask
 } = tasksSlice.actions;
-export default tasksSlice.reducer;
+export const {reducer: tasksReducer} = tasksSlice;
