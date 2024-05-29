@@ -7,7 +7,7 @@ import {
 } from "@reduxjs/toolkit";
 
 import taskModuleReducer from "pages/TasksPage/tasksSlice";
-import usersModuleReducer from "shared/slices/usersSlice";
+import usersModuleReducer from "pages/UsersPage/shared/slices/usersSlice";
 
 const combinedReducers = combineReducers({
   users: usersModuleReducer,

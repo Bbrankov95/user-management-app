@@ -1,8 +1,8 @@
 import { useCallback, useState, type FC, type ChangeEvent } from "react";
 import Flex from "antd/es/flex";
 
-import type { Post as UserPost } from "pages/SingleUserPage/components/Posts/types";
-import { EditableField } from "shared/components";
+import type { Post as UserPost } from "pages/UsersPage/pages/SingleUserPage/components/Posts/types";
+import { EditableField } from "pages/UsersPage/shared/components";
 import { ConfirmationModal, Actions, EditActions } from "./components";
 import { useDeletePost, useUpdatePost } from "./hooks";
 

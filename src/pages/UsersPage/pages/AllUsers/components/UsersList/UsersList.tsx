@@ -11,8 +11,8 @@ import {
   fetchUsersInit,
   fetchUsersSuccess,
   resetState,
-} from "shared/slices/usersSlice";
-import { UserCollapse } from "shared/components";
+} from "pages/UsersPage/shared/slices/usersSlice";
+import { UserCollapse } from "pages/UsersPage/shared/components";
 import { axiosInstance } from "services";
 import { Spin } from "antd";
 

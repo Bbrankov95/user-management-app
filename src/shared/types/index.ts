@@ -33,5 +33,3 @@ export type Page = {
   name: string;
   path: string;
 };
-
-export * from './enums'

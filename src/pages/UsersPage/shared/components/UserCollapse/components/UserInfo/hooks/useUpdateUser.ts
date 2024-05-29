@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { axiosInstance } from "services";
 import { User } from "shared/types";
 
-import { updateUser } from 'shared/slices/usersSlice'
+import { updateUser } from 'pages/UsersPage/shared/slices/usersSlice'
 
 const useUpdateUser = () => {
     const [isLoading, setIsloading] = useState(false);

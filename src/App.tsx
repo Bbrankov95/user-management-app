@@ -4,9 +4,6 @@ import Result from "antd/es/result";
 import AppContainer from "./app/AppContainer";
 
 const UsersPage = lazy(() => import("pages/UsersPage/UsersPage"));
-const SingleUserPage = lazy(
-  () => import("pages/SingleUserPage/SingleUserPage")
-);
 const TasksPage = lazy(() => import("pages/TasksPage/TasksPage"));
 
 function App() {
@@ -15,8 +12,7 @@ function App() {
       <Suspense>
         <Routes>
           <Route path="/" element={<Navigate to="/users" />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="users/:id" element={<SingleUserPage />} />
+          <Route path="/users/*" element={<UsersPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="*" element={<Result.PRESENTED_IMAGE_404 />} />
         </Routes>

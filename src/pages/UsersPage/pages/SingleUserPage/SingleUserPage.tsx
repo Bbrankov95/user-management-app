@@ -12,11 +12,11 @@ import Spin from "antd/es/spin";
 import {
   fetchUsersSuccess,
   selectUserById,
-  selectUsers,
-} from "shared/slices/usersSlice";
+} from "pages/UsersPage/shared/slices/usersSlice";
 import { useAppSelector } from "shared/store";
 import { Posts } from "./components";
-import { UserCollapse } from "shared/components";
+import { UserCollapse } from "pages/UsersPage/shared/components";
+
 import useFetchUser from "./hooks/useFetchUser";
 
 const SingleUserPage = () => {
@@ -24,17 +24,16 @@ const SingleUserPage = () => {
   const { id } = useParams() ?? {};
   const [fetchUser, isLoading] = useFetchUser(Number(id));
   const user = useAppSelector((state) => selectUserById(state, Number(id)));
-  const { hasFetched } = useAppSelector(selectUsers);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!hasFetched) {
-      const insertUser = async () => {
-        const user = await fetchUser();
+    const insertUser = async () => {
+      const user = await fetchUser();
+      if (user) {
         dispatch(fetchUsersSuccess([user]));
-      };
-      insertUser();
-    }
+      }
+    };
+    insertUser();
   }, [user]);
 
   if (isLoading) {
