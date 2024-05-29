@@ -4,7 +4,14 @@ import Flex from "antd/es/flex";
 
 import type { User } from "shared/types";
 import useUpdateUser from "./hooks/useUpdateUser";
-import { PersonalInfoColumn, AdressColumn, CompanyColumn, GeoColumn, Actions, EditActions } from "./components";
+import {
+  PersonalInfoColumn,
+  AddressColumn,
+  CompanyColumn,
+  GeoColumn,
+  Actions,
+  EditActions,
+} from "./components";
 
 type UserInfoProps = {
   user: User;
@@ -15,15 +22,15 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
   const { id: userId } = useParams() ?? {};
-  const [updatedUser, isLoading] = useUpdateUser()
+  const [updatedUser, isLoading] = useUpdateUser();
   const isChanged = JSON.stringify(innerUser) !== JSON.stringify(user);
-  const shouldDisableSubmit = !isChanged || !isChanged && isLoading;
+  const shouldDisableSubmit = !isChanged || (!isChanged && isLoading);
 
   const toggleEditMode = () => setEditMode((prevState) => !prevState);
 
   const onEditUser = async () => {
-    updatedUser(Number(userId ? userId : innerUser.id), innerUser)
-    toggleEditMode()
+    updatedUser(Number(userId ? userId : innerUser.id), innerUser);
+    toggleEditMode();
   };
 
   const onCancel = () => {
@@ -66,9 +73,8 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           ...prevState.address,
           geo: { ...prevState.address.geo, [name]: value },
         },
-      }))
-    }
-    ,
+      }));
+    },
     []
   );
 
@@ -76,15 +82,35 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
 
   return (
     <Flex gap={10}>
-      <PersonalInfoColumn editMode={editMode} user={innerUser} onColumnChange={onPersonalInfoChange} />
+      <PersonalInfoColumn
+        editMode={editMode}
+        user={innerUser}
+        onColumnChange={onPersonalInfoChange}
+      />
       <Flex vertical flex={1}>
-        <AdressColumn editMode={editMode} user={innerUser} onColumnChange={onAddressInfoChange} />
-        <GeoColumn editMode={editMode} user={innerUser} onColumnChange={onGeoInfoChange} />
+        <AddressColumn
+          editMode={editMode}
+          user={innerUser}
+          onColumnChange={onAddressInfoChange}
+        />
+        <GeoColumn
+          editMode={editMode}
+          user={innerUser}
+          onColumnChange={onGeoInfoChange}
+        />
       </Flex>
-      <CompanyColumn editMode={editMode} user={innerUser} onColumnChange={onCompanyInfoChange} />
+      <CompanyColumn
+        editMode={editMode}
+        user={innerUser}
+        onColumnChange={onCompanyInfoChange}
+      />
       <Flex vertical>
         {editMode ? (
-          <EditActions disabled={shouldDisableSubmit} onCancel={onCancel} onEdit={onEditUser} />
+          <EditActions
+            disabled={shouldDisableSubmit}
+            onCancel={onCancel}
+            onEdit={onEditUser}
+          />
         ) : (
           <Actions onEdit={toggleEditMode} onSeePosts={onSeePostsHandler} />
         )}

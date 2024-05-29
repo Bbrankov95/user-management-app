@@ -8,13 +8,13 @@ import {
   FieldNumberOutlined,
 } from "@ant-design/icons";
 
-type AdressColumnProps = {
+type AddressColumnProps = {
   user: User;
   onColumnChange: (e: ChangeEvent<HTMLInputElement>) => void;
   editMode: boolean;
 };
 
-const AdressColumn: React.FC<AdressColumnProps> = ({
+const AddressColumn: React.FC<AddressColumnProps> = ({
   onColumnChange,
   user,
   editMode,
@@ -56,4 +56,4 @@ const AdressColumn: React.FC<AdressColumnProps> = ({
   );
 };
 
-export default AdressColumn;
+export default AddressColumn;
