@@ -29,7 +29,7 @@ const SingleUserPage = () => {
       }
     };
     insertUser();
-  }, [user]);
+  }, []);
 
   if (isLoading) {
     return <Spin size="large" />;

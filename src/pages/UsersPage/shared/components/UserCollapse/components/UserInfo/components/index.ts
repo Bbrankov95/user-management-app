@@ -4,4 +4,3 @@ export { default as AddressColumn } from './AddressColumn/AddressColumn';
 export { default as GeoColumn } from './GeoColumn/GeoColumn';
 export { default as Actions } from './Actions/Actions'
 export { default as EditActions } from './EditActions/EditActions'
-export { default as EditableField } from './EditableField/EditableField'
