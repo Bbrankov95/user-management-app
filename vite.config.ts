@@ -9,7 +9,7 @@ export default defineConfig({
       services: path.resolve(__dirname, "./src/services"),
       components: path.resolve(__dirname, "./src/components"),
       shared: path.resolve(__dirname, "./src/shared"),
-      modules: path.resolve(__dirname, "./src/modules"),
+      pages: path.resolve(__dirname, "./src/pages"),
     },
   },
 });

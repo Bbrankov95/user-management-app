@@ -20,8 +20,8 @@
       "shared": [
         "shared"
       ],
-      "modules": [
-        "modules"
+      "pages": [
+        "pages"
       ]
     },
     /* Bundler mode */

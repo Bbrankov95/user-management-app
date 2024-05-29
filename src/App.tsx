@@ -1,40 +1,17 @@
+import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import Layout from "antd/es/layout";
+import Result from "antd/es/result";
 
 import { Navigation } from "components";
 
 import classes from "./App.module.scss";
-import { Result } from "antd";
-import { Suspense, lazy } from "react";
 
 const { Content } = Layout;
 
-type Module = {
-  name: string;
-  path: string;
-};
-
-const modules: Module[] = [
-  {
-    name: "Users",
-    path: "/users",
-  },
-  { name: "Tasks", path: "/tasks" },
-] as const;
-
-const UsersModule = lazy(() => import("./modules/UsersModule/UsersModule"));
-const TasksModule = lazy(() => import("./modules/TasksModule/TasksModule"));
-
-const renderModule = (module: Module) => {
-  switch (module.name) {
-    case "Users":
-      return <UsersModule />;
-    case "Tasks":
-      return <TasksModule />;
-    default:
-      return <Result.PRESENTED_IMAGE_404 />;
-  }
-};
+const UsersPage = lazy(() => import("pages/UsersPage/UsersPage"));
+const SingleUserPage = lazy(() => import("pages/SingleUserPage/SingleUserPage"));
+const TasksPage = lazy(() => import("pages/TasksPage/TasksPage"));
 
 function App() {
   return (
@@ -43,17 +20,11 @@ function App() {
       <Content>
         <Suspense>
           <Routes>
-            <Route
-              path="/"
-              element={<Navigate to={modules[0].path} replace />}
-            />
-            {modules.map((module) => (
-              <Route
-                key={module.name}
-                path={module.path + "/*"}
-                element={renderModule(module)}
-              />
-            ))}
+            <Route path="/" element={<Navigate to="/users" />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="users/:id" element={<SingleUserPage />} />
+            <Route path="/tasks" element={<TasksPage />} />
+            <Route path="*" element={<Result.PRESENTED_IMAGE_404 />} />
           </Routes>
         </Suspense>
       </Content>
