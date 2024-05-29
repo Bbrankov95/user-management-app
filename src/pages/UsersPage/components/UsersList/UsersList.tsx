@@ -14,10 +14,10 @@ import {
 } from "shared/slices/usersSlice";
 import { UserCollapse } from "shared/components";
 import { axiosInstance } from "services";
-
+import { Spin } from "antd";
 
 const UsersList = () => {
-  const { data: users } = useAppSelector(selectUsers);
+  const { data: users, loading, hasFetched } = useAppSelector(selectUsers);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,14 +38,20 @@ const UsersList = () => {
     };
   }, [dispatch]);
 
+  if (loading) {
+    return <Spin size="large" />;
+  }
+
+  if (users.length === 0 && hasFetched) {
+    return <Empty />;
+  }
+
   return (
     <Flex vertical align="center">
       <Typography.Title level={4}>Users</Typography.Title>
-      {users.length > 0 ? (
-        users.map((user) => <UserCollapse key={user.id} user={user} />)
-      ) : (
-        <Empty />
-      )}
+      {users.map((user) => (
+        <UserCollapse key={user.id} user={user} />
+      ))}
     </Flex>
   );
 };
