@@ -1,1 +1,1 @@
-export { default as Posts } from "./Posts/Posts";
+export {default as UserDetails} from './UserDetails/UserDetails'

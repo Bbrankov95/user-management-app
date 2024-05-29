@@ -27,9 +27,3 @@ export type User = {
   website: string;
   company: Company;
 };
-
-
-export type Page = {
-  name: string;
-  path: string;
-};
