@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 
 import { completeTask } from 'pages/TasksPage/tasksSlice'
-import type { Task } from "pages/TasksPage/types";
+import type { Task } from "pages/TasksPage/shared/types";
 
 const useCompleteTodo = () => {
     const [isLoading, setIsLoading] = useState(false);

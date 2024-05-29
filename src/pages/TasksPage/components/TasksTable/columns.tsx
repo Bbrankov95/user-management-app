@@ -2,10 +2,10 @@ import CloseCircleOutlined from "@ant-design/icons/CloseCircleOutlined";
 import CheckCircleOutline from "@ant-design/icons/CheckCircleOutlined";
 
 import type { User } from "shared/types";
-import type { Task } from '../../types'
+import type { Task } from "pages/TasksPage/shared/types";
 import { CompleteTodoButton } from "./components";
 
-const columns = (userFilter: any) => ([
+const columns = (userFilter: any) => [
   {
     title: "Title",
     dataIndex: "title",
@@ -24,10 +24,9 @@ const columns = (userFilter: any) => ([
       }
     },
     onFilter: (value: boolean | React.Key, record: Task) => {
-      return value === record.userId
-    }
-    ,
-    filters: userFilter
+      return value === record.userId;
+    },
+    filters: userFilter,
   },
   {
     title: "Status",
@@ -56,8 +55,10 @@ const columns = (userFilter: any) => ([
   {
     title: "",
     key: "button",
-    render: (task: Task) => <CompleteTodoButton disabled={task.completed} taskId={task.id} />,
+    render: (task: Task) => (
+      <CompleteTodoButton disabled={task.completed} taskId={task.id} />
+    ),
   },
-]);
+];
 
 export default columns;

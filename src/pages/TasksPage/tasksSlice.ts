@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { type RootState } from "shared/store";
 
-import type { Task } from "./types";
+import type { Task } from "pages/TasksPage/shared/types";
 
 type IState = {
   data: Task[];
