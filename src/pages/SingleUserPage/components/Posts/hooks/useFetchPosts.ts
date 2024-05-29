@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { axiosInstance } from "services";
-import type {Post} from '../../../../types'
+import type {Post} from '../types'
 
 const useFetchPosts = (userId: number) => {
   const [posts, setPosts] = useState<Post[]>([]);

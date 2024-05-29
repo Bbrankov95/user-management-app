@@ -1,17 +1,15 @@
-import { ChangeEvent, useCallback, useState, type FC } from "react";
+import { useCallback, useState, type FC, type ChangeEvent } from "react";
 import Flex from "antd/es/flex";
 
+import type { Post as UserPost } from "pages/SingleUserPage/components/Posts/types";
 import { EditableField } from "shared/components";
-import { ConfirmationModal } from './components'
-import { Post as UserPost } from "pages/SingleUserPage/components/Posts/types";
-import { Actions, EditActions } from '..'
-import useUpdatePost from "../../../../shared/hooks/useUpdatePost";
-import useDeletePost from "../../../../shared/hooks/useDeletePost";
+import { ConfirmationModal, Actions, EditActions } from "./components";
+import { useDeletePost, useUpdatePost } from "./hooks";
 
 import classes from "./Post.module.scss";
 
 type PostProps = {
-  post: UserPost
+  post: UserPost;
 };
 
 const Post: FC<PostProps> = ({ post }) => {
@@ -41,14 +39,14 @@ const Post: FC<PostProps> = ({ post }) => {
   };
 
   const onEdit = () => {
-    updatePost(postId, innerPost)
-    setEditMode(false)
-  }
+    updatePost(postId, innerPost);
+    setEditMode(false);
+  };
 
   const onModalCancel = () => setConfirmationModal(false);
 
   const onModalConfirm = () => {
-    deletePost(postId)
+    deletePost(postId);
     setConfirmationModal(false);
   };
 
@@ -72,9 +70,16 @@ const Post: FC<PostProps> = ({ post }) => {
       />
       <Flex gap={10} justify="center">
         {editMode ? (
-          <EditActions disabled={!isChanged || !isChanged && isUpdatePending} onEdit={onEdit} onCancel={onCancel} />
+          <EditActions
+            disabled={!isChanged || (!isChanged && isUpdatePending)}
+            onEdit={onEdit}
+            onCancel={onCancel}
+          />
         ) : (
-          <Actions onEdit={toggleEditMode} onDelete={() => setConfirmationModal(true)} />
+          <Actions
+            onEdit={toggleEditMode}
+            onDelete={() => setConfirmationModal(true)}
+          />
         )}
       </Flex>
       <ConfirmationModal
@@ -86,7 +91,7 @@ const Post: FC<PostProps> = ({ post }) => {
       />
     </Flex>
   );
-}
+};
 
 Post.displayName = "Post";
 export default Post;

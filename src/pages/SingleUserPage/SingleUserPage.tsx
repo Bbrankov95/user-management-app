@@ -9,30 +9,33 @@ import Breadcrumb from "antd/es/breadcrumb";
 import LeftOutlined from "@ant-design/icons/LeftOutlined";
 import Spin from "antd/es/spin";
 
-import { UserCollapse } from "shared/components";
-import useFetchUser from "./shared/hooks/useFetchUser";
-
+import {
+  fetchUsersSuccess,
+  selectUserById,
+  selectUsers,
+} from "shared/slices/usersSlice";
 import { useAppSelector } from "shared/store";
 import { Posts } from "./components";
-import { fetchUsersSuccess, selectUserById, selectUsers } from "shared/slices/usersSlice";
+import { UserCollapse } from "shared/components";
+import useFetchUser from "./hooks/useFetchUser";
 
 const SingleUserPage = () => {
   const navigate = useNavigate();
   const { id } = useParams() ?? {};
   const [fetchUser, isLoading] = useFetchUser(Number(id));
-  const user = useAppSelector(state => selectUserById(state, Number(id)))
-  const { hasFetched } = useAppSelector(selectUsers)
+  const user = useAppSelector((state) => selectUserById(state, Number(id)));
+  const { hasFetched } = useAppSelector(selectUsers);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!hasFetched) {
       const insertUser = async () => {
-        const user = await fetchUser()
-        dispatch(fetchUsersSuccess([user]))
-      }
-      insertUser()
+        const user = await fetchUser();
+        dispatch(fetchUsersSuccess([user]));
+      };
+      insertUser();
     }
-  }, [user])
+  }, [user]);
 
   if (isLoading) {
     return <Spin size="large" />;
