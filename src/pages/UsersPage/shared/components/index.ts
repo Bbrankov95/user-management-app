@@ -1,2 +1,2 @@
-export { default as UserCollapse } from './UserCollapse/UserCollapse'
+export { default as ExpandableUserInfo } from './ExpandableUserInfo/ExpandableUserInfo'
 export { default as EditableField } from './EditableField/EditableField'

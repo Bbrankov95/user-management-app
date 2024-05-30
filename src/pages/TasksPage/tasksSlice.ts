@@ -1,14 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { Dispatch, createSlice } from "@reduxjs/toolkit";
 
 import { type RootState } from "shared/store";
 
-import type { Task } from "pages/TasksPage/shared/types";
+import type { Task } from "./types";
+import { axiosInstance } from "services";
+import {createUserFilterOptions,mapTaskWithUser} from './utils'
 
 type IState = {
   data: Task[];
   loading: boolean;
   hasFetched: boolean;
   error: string;
+  filterOptions:  { value: number; text: string }[]
 };
 
 const initialState: IState = {
@@ -16,6 +19,7 @@ const initialState: IState = {
   loading: false,
   hasFetched: false,
   error: "",
+  filterOptions: []
 };
 
 const tasksSlice = createSlice({
@@ -28,9 +32,10 @@ const tasksSlice = createSlice({
       state.error = "";
     },
     fetchTasksSuccess: (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
       state.hasFetched = true;
       state.loading = false;
+      state.filterOptions = action.payload.options
     },
     fetchTasksFailure: (state, action) => {
       state.error = action.payload;
@@ -54,3 +59,18 @@ export const {
   completeTask
 } = tasksSlice.actions;
 export const {reducer: tasksReducer} = tasksSlice;
+
+export const fetchTasksAndFilters = () => async(dispatch: Dispatch) => {
+  dispatch(fetchTasksInit())
+  try {
+    const [{ data: tasks }, { data: users }] = await Promise.all([
+          axiosInstance.get("/todos"),
+          axiosInstance.get("/users"),
+        ]);
+        const filterOptionByOwner = createUserFilterOptions(users);
+        const mappedTasks = mapTaskWithUser({ tasks, users });
+        dispatch(fetchTasksSuccess({data: mappedTasks,options: filterOptionByOwner}));
+  } catch(error) {
+    dispatch(fetchTasksFailure(error))
+  }
+}
