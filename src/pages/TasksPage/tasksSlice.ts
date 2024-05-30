@@ -30,12 +30,14 @@ const tasksSlice = createSlice({
       state.data = [];
       state.hasFetched = true;
       state.error = "";
+      state.filterOptions = []
     },
     fetchTasksSuccess: (state, action) => {
-      state.data = action.payload.data;
+      const {data,options} = action.payload ?? {}
+      state.data = data;
       state.hasFetched = true;
       state.loading = false;
-      state.filterOptions = action.payload.options
+      state.filterOptions = options
     },
     fetchTasksFailure: (state, action) => {
       state.error = action.payload;

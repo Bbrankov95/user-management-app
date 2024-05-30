@@ -3,7 +3,7 @@ import Flex from "antd/es/flex";
 import Typography from "antd/es/typography";
 import Empty from "antd/es/empty";
 
-import UserPost from "./Post/Post";
+import UserPost from "./features/Post/Post";
 import useFetchPosts from "./useFetchPosts";
 import type { Post } from "./types";
 

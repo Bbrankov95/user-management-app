@@ -27,6 +27,7 @@ const ExpandableUserInfo: FC<ExpandableUserInfoProps> = memo(
           fontSize: "1rem",
           width: "100%",
           padding: 10,
+          userSelect: "none",
         }}
         size="middle"
         items={items}
