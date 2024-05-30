@@ -7,21 +7,21 @@ import { User } from "shared/types";
 import { updateUser } from 'pages/UsersPage/usersSlice'
 
 const useUpdateUser = () => {
-    const [isLoading, setIsloading] = useState(false);
+    const [isPending, setIsPending] = useState(false);
     const dispatch = useDispatch()
 
     const editUser = async (id: User['id'], updatedUser: User) => {
-        setIsloading(true)
+        setIsPending(true)
         try {
             await axiosInstance.put(`/users/${id}`, updatedUser)
             dispatch(updateUser(updatedUser))
         } catch (error) {
             console.error(error)
         } finally {
-            setIsloading(false)
+            setIsPending(false)
         }
     }
-    return [editUser, isLoading] as const
+    return [editUser, isPending] as const
 }
 
 export default useUpdateUser;
