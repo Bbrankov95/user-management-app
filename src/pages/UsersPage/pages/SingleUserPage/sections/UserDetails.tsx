@@ -3,9 +3,9 @@ import Flex from "antd/es/flex";
 import Button from "antd/es/button";
 import Typography from "antd/es/typography";
 
-import { ExpandableUserInfo } from "pages/UsersPage/shared/components";
 import { useAppSelector } from "shared/store";
 import { selectUserById } from "pages/UsersPage/usersSlice";
+import UserInfo from "pages/UsersPage/shared/components/UserInfo/UserInfo";
 
 const UserDetails = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const UserDetails = () => {
 
   return (
     <Flex vertical>
-      <ExpandableUserInfo user={user} defaultActiveKey={[user.id ?? "HOME"]} />
+      <UserInfo user={user} />
     </Flex>
   );
 };

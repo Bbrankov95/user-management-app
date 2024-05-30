@@ -12,6 +12,7 @@ import {
   Actions,
   EditActions,
 } from "./components";
+import { Collapse } from "antd";
 
 type UserInfoProps = {
   user: User;
@@ -81,41 +82,62 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const onSeePostsHandler = () => navigate(`/users/${user.id}`);
 
   return (
-    <Flex gap={10}>
-      <PersonalInfoColumn
-        editMode={editMode}
-        user={innerUser}
-        onColumnChange={onPersonalInfoChange}
-      />
-      <Flex vertical flex={1}>
-        <AddressColumn
-          editMode={editMode}
-          user={innerUser}
-          onColumnChange={onAddressInfoChange}
-        />
-        <GeoColumn
-          editMode={editMode}
-          user={innerUser}
-          onColumnChange={onGeoInfoChange}
-        />
-      </Flex>
-      <CompanyColumn
-        editMode={editMode}
-        user={innerUser}
-        onColumnChange={onCompanyInfoChange}
-      />
-      <Flex vertical>
-        {editMode ? (
-          <EditActions
-            disabled={shouldDisableSubmit}
-            onCancel={onCancel}
-            onEdit={onEditUser}
-          />
-        ) : (
-          <Actions onEdit={toggleEditMode} onSeePosts={onSeePostsHandler} />
-        )}
-      </Flex>
-    </Flex>
+    <Collapse
+      style={{
+        fontSize: "1rem",
+        width: "100%",
+        padding: 10,
+        userSelect: "none",
+      }}
+      size="middle"
+      defaultActiveKey={userId ? userId : undefined}
+      items={[
+        {
+          label: user.name,
+          key: user.id,
+          children: [
+            <Flex gap={10} flex={1}>
+              <PersonalInfoColumn
+                editMode={editMode}
+                user={innerUser}
+                onColumnChange={onPersonalInfoChange}
+              />
+              <Flex vertical flex={1}>
+                <AddressColumn
+                  editMode={editMode}
+                  user={innerUser}
+                  onColumnChange={onAddressInfoChange}
+                />
+                <GeoColumn
+                  editMode={editMode}
+                  user={innerUser}
+                  onColumnChange={onGeoInfoChange}
+                />
+              </Flex>
+              <CompanyColumn
+                editMode={editMode}
+                user={innerUser}
+                onColumnChange={onCompanyInfoChange}
+              />
+              <Flex vertical>
+                {editMode ? (
+                  <EditActions
+                    disabled={shouldDisableSubmit}
+                    onCancel={onCancel}
+                    onEdit={onEditUser}
+                  />
+                ) : (
+                  <Actions
+                    onEdit={toggleEditMode}
+                    onSeePosts={onSeePostsHandler}
+                  />
+                )}
+              </Flex>
+            </Flex>,
+          ],
+        },
+      ]}
+    />
   );
 };
 

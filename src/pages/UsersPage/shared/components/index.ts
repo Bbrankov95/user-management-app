@@ -1,2 +1,2 @@
-export { default as ExpandableUserInfo } from './ExpandableUserInfo/ExpandableUserInfo'
+export { default as UserInfo } from './UserInfo/UserInfo'
 export { default as EditableField } from './EditableField/EditableField'

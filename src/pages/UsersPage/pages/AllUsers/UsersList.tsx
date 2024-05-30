@@ -4,8 +4,8 @@ import Typography from "antd/es/typography";
 
 import { useAppSelector } from "shared/store";
 import { selectUsers } from "pages/UsersPage/usersSlice";
-import { ExpandableUserInfo } from "pages/UsersPage/shared/components";
 import { Spin } from "antd";
+import UserInfo from "pages/UsersPage/shared/components/UserInfo/UserInfo";
 
 const UsersList = () => {
   const { data: users, loading, hasFetched } = useAppSelector(selectUsers);
@@ -22,7 +22,7 @@ const UsersList = () => {
     <Flex vertical align="center">
       <Typography.Title level={4}>Users</Typography.Title>
       {users.map((user) => (
-        <ExpandableUserInfo key={user.id} user={user} />
+        <UserInfo key={user.id} user={user} />
       ))}
     </Flex>
   );
