@@ -18,7 +18,7 @@ const UserBreadcrumb = () => {
       items={[
         {
           title: (
-            <NavLink to={"/"}>
+            <NavLink to={"/users"}>
               <LeftOutlined /> User's List
             </NavLink>
           ),
