@@ -1,25 +1,23 @@
-import { Route, Routes } from "react-router";
-import Layout from "antd/es/layout";
+import { Suspense, lazy } from "react";
+import { Navigate, Route, Routes } from "react-router";
+import Result from "antd/es/result";
+import AppContainer from "./app/AppContainer";
 
-import { UsersList, Navigation } from "components";
-import { SingleUserPage, TasksPage } from "pages";
-
-import classes from "./App.module.scss";
-
-const { Content } = Layout;
+const UsersPage = lazy(() => import("pages/UsersPage/UsersPage"));
+const TasksPage = lazy(() => import("pages/TasksPage/TasksPage"));
 
 function App() {
   return (
-    <Layout className={classes.App}>
-      <Navigation />
-      <Content>
+    <AppContainer>
+      <Suspense>
         <Routes>
-          <Route path="/" element={<UsersList />} />
+          <Route path="/" element={<Navigate to="/users" />} />
+          <Route path="/users/*" element={<UsersPage />} />
           <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/users/:id" element={<SingleUserPage />} />
+          <Route path="*" element={<Result.PRESENTED_IMAGE_404 />} />
         </Routes>
-      </Content>
-    </Layout>
+      </Suspense>
+    </AppContainer>
   );
 }
 

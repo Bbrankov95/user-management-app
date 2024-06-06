@@ -17,15 +17,12 @@
       "components": [
         "components"
       ],
-      "store": [
-        "store"
-      ],
-      "types": [
-        "types"
+      "shared": [
+        "shared"
       ],
       "pages": [
         "pages"
-      ],
+      ]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
